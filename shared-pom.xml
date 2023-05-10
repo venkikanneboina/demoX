@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>apigee</groupId>
+	<artifactId>Calculator</artifactId>
+	<version>1.0.0</version>
+	<name>Calculator</name>
+	<packaging>pom</packaging>
+   
+	<!-- This is inherited from <version>0.0.15</version> of the the non-opensource 
+		plugin -->
+	
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<name>Maven Plugin Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+	<repositories>
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
+		<project.root.dir>/home/vkanneboina/JenkinsX/apiproxy</project.root.dir>
+		<target.root.dir>/home/vkanneboina/JenkinsX/target</target.root.dir>
+		<deployment.suffix>50028319762-compute@developer.gserviceaccount.com</deployment.suffix>
+	</properties>
+
+	<!-- This is where you add the environment specific properties under various profile names -->
+	<!-- For apigee.options, refer to "Advanced Configuration Options" under https://github.com/apigee/apigee-deploy-maven-plugin#pom-xml-sample -->
+	<profiles>
+		<!--<profile>
+			<id>test</id>
+			<properties>
+				<apigee.profile>test</apigee.profile>
+				<apigee.env>test</apigee.env>
+				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
+				<apigee.apiversion>v1</apigee.apiversion>
+				<apigee.org>venkikanneboina-eval</apigee.org>
+				<apigee.username>venkikanneboina@gmail.com</apigee.username>
+				<apigee.password>Havish@2021</apigee.password>				
+			</properties>
+		</profile>-->
+         <profile>
+            <id>eval</id>
+            <properties>
+                <apigee.profile>eval</apigee.profile>
+                <apigee.hosturl>https://apigee.googleapis.com</apigee.hosturl>
+                <apigee.apiversion>v1</apigee.apiversion>
+                <apigee.org>apigeeprojectvenkat</apigee.org>
+                <apigee.env>eval</apigee.env>
+                <apigee.authtype>oauth</apigee.authtype> <!-- only option -->
+                <apigee.bearer>a77d6864d8441026dc8b2dcbceff8040db408c1a</apigee.bearer> <!-- this takes precedence over service account file -->                
+                <apigee.serviceaccount.file>/home/vkanneboina/JenkinsX/apigeeprojectvenkat-a77d6864d844.json</apigee.serviceaccount.file>
+                <apigee.options>override</apigee.options> <!-- override is default. Other options are async|clean-->
+                <apigee.googletoken.email>50028319762-compute@developer.gserviceaccount.com</apigee.googletoken.email> <!-- Available in Apigee X and Apigee hybrid 1.6 + -->
+            </properties>
+        </profile>
+		
+	</profiles>
+
+	<build>
+	<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>io.apigee.build-tools.enterprise4g</groupId>
+					<artifactId>apigee-edge-maven-plugin</artifactId>
+					<version>1.2.2</version>
+				</plugin>
+				<plugin>
+					 <groupId>com.apigee.edge.config</groupId>
+			    		<artifactId>apigee-config-maven-plugin</artifactId>
+					<version>1.4.3</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+
+			<!-- run jslint -->
+		
+			<!-- copy the full apiproxy folder to target folder -->
+             
+           <plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<overwrite>true</overwrite>
+							<resources>
+								<resource>
+									
+									<directory>/home/vkanneboina/Jenkins/apiproxy</directory>
+									<includes>
+										<include>apiproxy/**</include>
+										<include>test/integration/**</include>
+									</includes>
+								</resource>
+							</resources>
+							
+							<outputDirectory>/home/vkanneboina/Jenkins/target</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.2</version>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<basedir>/home/vkanneboina/Jenkins/target</basedir>
+					<includes>
+						<include>apiproxy/proxies/default.xml</include>
+						<include>apiproxy/proxies/loggly.xml</include>
+						<include>test/integration/test-config.json</include>
+						<include>apiproxy/Calculator.xml</include>
+					</includes>
+					<replacements>
+						<replacement>
+							<token>/Calculator/v1</token>
+							<value>/Calculator/v1</value>
+						</replacement>
+						
+					</replacements>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>io.apigee.build-tools.enterprise4g</groupId>
+				<artifactId>apigee-edge-maven-plugin</artifactId>
+                <version>1.2.2</version>
+				<executions>
+					<execution>
+						<id>configure-bundle-step</id>
+						<phase>package</phase>
+						<goals>
+							<goal>configure</goal>
+						</goals>
+					</execution>
+					<!--deploy bundle -->
+					<execution>
+						<id>deploy-bundle-step</id>
+						<phase>install</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+          
+
+			
+
+			<!-- cleaning dirs -->
+			<!--<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+
+				<executions>
+					<execution>
+						<id>auto-clean-init</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>auto-clean-install</id>
+						<phase>install</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>-->
+		</plugins>
+	</build>
+
+</project>
