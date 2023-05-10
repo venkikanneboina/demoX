@@ -3,9 +3,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>apigee</groupId>
-	<artifactId>Calculator</artifactId>
+	<artifactId>DemoX</artifactId>
 	<version>1.0.0</version>
-	<name>Calculator</name>
+	<name>DemoX</name>
 	<packaging>pom</packaging>
    
 	<!-- This is inherited from <version>0.0.15</version> of the the non-opensource 
@@ -71,7 +71,7 @@
                 <apigee.org>apigeeprojectvenkat</apigee.org>
                 <apigee.env>eval</apigee.env>
                 <apigee.authtype>oauth</apigee.authtype> <!-- only option -->
-                <apigee.bearer>a77d6864d8441026dc8b2dcbceff8040db408c1a</apigee.bearer> <!-- this takes precedence over service account file -->                
+                <apigee.bearer>ya29.a0AWY7CklKQzJ-g5jQT3cdad5e1b07AnpO59GKvljft_CGJjtA6MKKoh2UwaBcxCqnAA__Q-Gv4i5hPGa4k3BJlvlc47by4VwUtzXk6MpjR9oZDlL_QuMBiCM48SCq3EZeAotYWnUQmpEAG6s7S22OTT_2VivmQuM9DPfNo07iCvqzr8v4gU2iBzRPPwfhisflD-gJdOqgbywI4pklZK86DM8I51mI93X7VpFGYAaCgYKAVYSARISFQG1tDrp1McvwO2xn3yj3T-6IFo-wA0237</apigee.bearer> <!-- this takes precedence over service account file -->                
                 <apigee.serviceaccount.file>/home/vkanneboina/JenkinsX/apigeeprojectvenkat-a77d6864d844.json</apigee.serviceaccount.file>
                 <apigee.options>override</apigee.options> <!-- override is default. Other options are async|clean-->
                 <apigee.googletoken.email>50028319762-compute@developer.gserviceaccount.com</apigee.googletoken.email> <!-- Available in Apigee X and Apigee hybrid 1.6 + -->
@@ -81,20 +81,6 @@
 	</profiles>
 
 	<build>
-	<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>io.apigee.build-tools.enterprise4g</groupId>
-					<artifactId>apigee-edge-maven-plugin</artifactId>
-					<version>1.2.2</version>
-				</plugin>
-				<plugin>
-					 <groupId>com.apigee.edge.config</groupId>
-			    		<artifactId>apigee-config-maven-plugin</artifactId>
-					<version>1.4.3</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 
 		<plugins>
 
@@ -104,7 +90,7 @@
              
            <plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.3</version>
+				<version>2.6</version>
 				<executions>
 					<execution>
 						<id>copy-resources</id>
@@ -117,7 +103,7 @@
 							<resources>
 								<resource>
 									
-									<directory>/home/vkanneboina/Jenkins/apiproxy</directory>
+									<directory>/home/vkanneboina/JenkinsX/apiproxy</directory>
 									<includes>
 										<include>apiproxy/**</include>
 										<include>test/integration/**</include>
@@ -125,64 +111,37 @@
 								</resource>
 							</resources>
 							
-							<outputDirectory>/home/vkanneboina/Jenkins/target</outputDirectory>
+							<outputDirectory>/home/vkanneboina/JenkinsX/target</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+           <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
 
 			<plugin>
-				<groupId>com.google.code.maven-replacer-plugin</groupId>
-				<artifactId>replacer</artifactId>
-				<version>1.5.2</version>
-				<executions>
-					<execution>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<basedir>/home/vkanneboina/Jenkins/target</basedir>
-					<includes>
-						<include>apiproxy/proxies/default.xml</include>
-						<include>apiproxy/proxies/loggly.xml</include>
-						<include>test/integration/test-config.json</include>
-						<include>apiproxy/Calculator.xml</include>
-					</includes>
-					<replacements>
-						<replacement>
-							<token>/Calculator/v1</token>
-							<value>/Calculator/v1</value>
-						</replacement>
-						
-					</replacements>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>io.apigee.build-tools.enterprise4g</groupId>
-				<artifactId>apigee-edge-maven-plugin</artifactId>
-                <version>1.2.2</version>
-				<executions>
-					<execution>
-						<id>configure-bundle-step</id>
-						<phase>package</phase>
-						<goals>
-							<goal>configure</goal>
-						</goals>
-					</execution>
-					<!--deploy bundle -->
-					<execution>
-						<id>deploy-bundle-step</id>
-						<phase>install</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+                <groupId>io.apigee.build-tools.enterprise4g</groupId>
+                <artifactId>apigee-edge-maven-plugin</artifactId>
+                <version>2.4.0</version>
+                <executions>
+                    <execution>
+                        <id>configure-bundle</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>configure</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>deploy-bundle</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
           
 
 			
