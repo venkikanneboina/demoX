@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>apigee</groupId>
-    <artifactId>parent-pom</artifactId>
+    <artifactId>demoX-pom</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
     <pluginRepositories>
@@ -30,29 +30,34 @@
                 <version>2.5</version>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <overwrite>true</overwrite>
-                            <encoding>UTF-8</encoding>
-                  
-                            <outputDirectory>/home/vkanneboina/JenkinsX/target</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>/home/vkanneboina/JenkinsX/apiproxy</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--  <plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<overwrite>true</overwrite>
+							<resources>
+								<resource>
+									
+									<directory>/home/vkanneboina/JenkinsX/apiproxy</directory>
+									<includes>
+										<include>apiproxy/**</include>
+										<include>test/integration/**</include>
+									</includes>
+								</resource>
+							</resources>
+							
+							<outputDirectory>/home/vkanneboina/JenkinsX/target</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>-->
             <plugin>
                 <groupId>io.apigee.build-tools.enterprise4g</groupId>
                 <artifactId>apigee-edge-maven-plugin</artifactId>
