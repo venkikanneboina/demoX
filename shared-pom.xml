@@ -19,10 +19,7 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
-    <properties>
-            <main.basedir>/home/vkanneboina/JenkinsX</main.basedir>
-    </properties>
-
+  
     <build>
         <plugins>
             <plugin>
